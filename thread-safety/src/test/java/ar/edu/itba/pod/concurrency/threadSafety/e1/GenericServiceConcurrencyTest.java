@@ -16,9 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Unit test for {@link GenericService} using {@link Thread}s
  */
 public class GenericServiceConcurrencyTest {
-    private static final int VISITS_BY_THREAD = 1;
-    private static final int THREAD_COUNT = 2;
-    private static final int EXPECTED_VISITS = 2;
+    // Si aumentamos a VISITS_BY_HREAD = 1000000 y a THREAD_COUNT = 1000 
+    //Lo que va a pasar es una race conidciion y se van a perder visitas
+    private static final int VISITS_BY_THREAD = 100000;
+    private static final int THREAD_COUNT = 1000;
+    private static final int EXPECTED_VISITS = 100000 * 1000;
 
     private GenericService service;
 
@@ -73,7 +75,7 @@ public final void visit_count_with_thread_start() throws InterruptedException {
 
         pool.shutdown();
         
-        pool.awaitTermination(2, TimeUnit.SECONDS);
+        pool.awaitTermination(20, TimeUnit.SECONDS); //Al aumentarle los threads, hay q aumentar esto tambien para que pueda procesar todo
 
         //The assert should be the last thing we do
         assertEquals(EXPECTED_VISITS, service.getVisitCount());

@@ -31,8 +31,8 @@ public class GenericServiceImpl implements GenericService {
         return s.orElse(null);
     }
 
-    @Override
-    public void addVisit() {
+    @Override   //Agregamos sync para resolver las race conditions
+    public synchronized void addVisit() {
         visitCount++;
     }
 
